@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class StudentControllerImpl implements StudentController {
 
-    private StudentManagerImpl studentManager;
+    private final StudentManagerImpl studentManager;
 
     public StudentControllerImpl() {
         this.studentManager = new StudentManagerImpl();
@@ -27,7 +27,7 @@ public class StudentControllerImpl implements StudentController {
 
             if (studentID.isEmpty()) throw new IllegalArgumentException("ID cannot be empty.");
             if (name.isEmpty()) throw new IllegalArgumentException("Name cannot be empty.");
-            if (newAge <= 0 || newAge > 116) throw new IllegalArgumentException("Age must be positive.");
+            if (newAge < 0 || newAge > 116) throw new IllegalArgumentException("Age must be positive.");
             if (newGrade < 0.0 || newGrade > 100.0) throw new IllegalArgumentException("Grade must be between 0.0 and 100.0.");
             Student student = new Student(name, newAge, newGrade, studentID);
             studentManager.addStudent(student);
@@ -85,13 +85,14 @@ public class StudentControllerImpl implements StudentController {
             return String.format("Student updated, name: %s, age: %d, grade: %f", baseName, baseAge, baseGrade);
         } catch (NumberFormatException ex) {
             return "Error: Age and Grade must be numeric.\n";
+        } catch (IllegalArgumentException ex) {
+            return "ID cannot be empty.\n";
         }
     }
 
     @Override
     public ArrayList<Student> displayAllStudents() {
-        ArrayList<Student> students = studentManager.displayAllStudents();
-        return students;
+        return studentManager.displayAllStudents();
     }
 
     @Override

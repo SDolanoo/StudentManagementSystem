@@ -11,10 +11,10 @@ public class Student {
     // Konstruktor
     public Student(String name, int age, double grade, String studentID) {
         if (age <= 0) {
-            throw new IllegalArgumentException("Wiek musi być liczbą dodatnią.");
+            throw new IllegalArgumentException("Age must be positive.");
         }
         if (grade < 0.0 || grade > 100.0) {
-            throw new IllegalArgumentException("Ocena musi być w zakresie od 0.0 do 100.0.");
+            throw new IllegalArgumentException("Grade must be between 0.0 and 100.0.");
         }
         this.name = name;
         this.age = age;
@@ -38,7 +38,7 @@ public class Student {
 
     public void setAge(int age) {
         if (age <= 0) {
-            throw new IllegalArgumentException("Wiek musi być liczbą dodatnią.");
+            throw new IllegalArgumentException("Age must be positive.");
         }
         this.age = age;
     }
@@ -49,7 +49,7 @@ public class Student {
 
     public void setGrade(double grade) {
         if (grade < 0.0 || grade > 100.0) {
-            throw new IllegalArgumentException("Ocena musi być w zakresie od 0.0 do 100.0.");
+            throw new IllegalArgumentException("Grade must be between 0.0 and 100.0.");
         }
         this.grade = grade;
     }

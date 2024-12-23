@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class StudentManagementGUI {
 
-    private StudentController studentController;
+    private final StudentController studentController;
 
     public StudentManagementGUI() {
         studentController = new StudentControllerImpl();
@@ -19,7 +19,7 @@ public class StudentManagementGUI {
 
     private void createAndShowGUI() {
         // Główne okno
-        JFrame frame = new JFrame("model.Student Management System");
+        JFrame frame = new JFrame("Student Management System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 600);
 
@@ -95,17 +95,14 @@ public class StudentManagementGUI {
         });
 
         updateButton.addActionListener(e -> {
-            try {
-                String studentID = idField.getText().trim(); // studentID can not be empty!!
-                String name = nameField.getText().trim();
-                String age = ageField.getText().trim();
-                String grade = gradeField.getText().trim();
+            String studentID = idField.getText().trim(); // studentID can not be empty!!
+            String name = nameField.getText().trim();
+            String age = ageField.getText().trim();
+            String grade = gradeField.getText().trim();
 
-                String message = studentController.updateStudent(name, age, grade, studentID);
-                outputArea.append(message + "\n");
-            } catch (NumberFormatException ex) {
-                outputArea.append("Error: Age and Grade must be numeric.\n");
-            }
+            String message = studentController.updateStudent(name, age, grade, studentID);
+            outputArea.append(message + "\n");
+
         });
 
         displayButton.addActionListener(e -> {
