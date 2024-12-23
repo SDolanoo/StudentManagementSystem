@@ -33,10 +33,7 @@ public class StudentManagerImpl implements StudentManager {
     }
 
     @Override
-    public String addStudent(Student student) {
-        if (doesStudentExist(student.getStudentID())) {
-            return "model.Student with id: " + student.getStudentID() + " already exists";
-        }
+    public void addStudent(Student student) {
 
         String insertSQL = "INSERT INTO students (studentID, name, age, grade) VALUES (?, ?, ?, ?);";
 
@@ -47,33 +44,26 @@ public class StudentManagerImpl implements StudentManager {
             preparedStatement.setInt(3, student.getAge());
             preparedStatement.setDouble(4, student.getGrade());
             preparedStatement.executeUpdate();
-            return "model.Student added successfully";
         } catch (SQLException e) {
-            return "Error adding student: " + e.getMessage();
+            System.out.println("Error adding student: " + e.getMessage());
         }
     }
 
     @Override
-    public String removeStudent(String studentID) {
-        if (!doesStudentExist(studentID)) {
-            System.err.println("model.Student with ID " + studentID + " does not exist.");
-            return "model.Student with id: " + studentID + " does not exist";
-        }
-
+    public void removeStudent(String studentID) {
         String deleteSQL = "DELETE FROM students WHERE studentID = ?;";
 
         try (Connection connection = connect();
              PreparedStatement preparedStatement = connection.prepareStatement(deleteSQL)) {
             preparedStatement.setString(1, studentID);
             preparedStatement.executeUpdate();
-            return "model.Student removed successfully";
         } catch (SQLException e) {
             System.err.println("Error removing student: " + e.getMessage());
-            return "Error removing student: " + e.getMessage();
         }
     }
 
-    private boolean doesStudentExist(String studentID) {
+    @Override
+    public boolean doesStudentExist(String studentID) {
         String querySQL = "SELECT 1 FROM students WHERE studentID = ?;";
 
         try (Connection connection = DriverManager.getConnection(DB_URL);
@@ -89,7 +79,8 @@ public class StudentManagerImpl implements StudentManager {
         return false;
     }
 
-    private ArrayList<Object> getStudentById(String studentID) {
+    @Override
+    public ArrayList<Object> getStudentById(String studentID) {
         ArrayList<Object> studentData = new ArrayList<>();
         String querySQL = "SELECT studentID, name, age, grade FROM students WHERE studentID = ?;";
 
@@ -113,23 +104,7 @@ public class StudentManagerImpl implements StudentManager {
 
 
     @Override
-    public String updateStudent(String name, int age, double grade, String studentID) {
-        if (!doesStudentExist(studentID)) {
-            return "model.Student with id: " + studentID + " does not exist";
-        }
-
-        ArrayList<Object> studentData = getStudentById(studentID);
-        // studentData == [ StudentID, name, age, grade ]
-        if (name == null) {
-            name = (String) studentData.get(1);
-        }
-        if (age == -1) {
-            age = (Integer) studentData.get(2);
-        }
-        if (grade == -1.0) {
-            grade = (Double) studentData.get(3);
-        }
-
+    public void updateStudent(String name, int age, double grade, String studentID) {
         String updateSQL = "UPDATE students SET name = ?, age = ?, grade = ? WHERE studentID = ?;";
 
         // Example update logic - replace with dynamic inputs or UI integration
@@ -141,10 +116,8 @@ public class StudentManagerImpl implements StudentManager {
             preparedStatement.setDouble(3, grade);
             preparedStatement.setString(4, studentID);
             preparedStatement.executeUpdate();
-            return String.format("model.Student updated, name: %s, age: %d, grade: %f", name, age, grade);
         } catch (SQLException e) {
             System.err.println("Error updating student: " + e.getMessage());
-            return "Error updating student: " + e.getMessage();
         }
     }
 
