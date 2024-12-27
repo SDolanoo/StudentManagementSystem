@@ -23,7 +23,6 @@ public class Student {
     }
 
     // Gettery i settery
-
     public String getName() {
         return name;
     }

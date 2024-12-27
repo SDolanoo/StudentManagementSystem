@@ -79,29 +79,31 @@ public class StudentManagementGUI {
 
         // Obsługa zdarzeń
         addButton.addActionListener(e -> {
+            // Takes all fields, as  all fields are required and cannot be empty
             String id = idField.getText().trim();
             String name = nameField.getText().trim();
             String age = ageField.getText().trim();
             String grade = gradeField.getText().trim();
 
             String message = studentController.addStudent(name, age, grade, id);
-            outputArea.append(message + "\n");
+            outputArea.append(message + "\n"); // Display message from controller
         });
 
-        removeButton.addActionListener(e ->     {
-            String id = idField.getText().trim();
+        removeButton.addActionListener(e -> {
+            String id = idField.getText().trim(); // Get student id from field
             String removeMessage = studentController.removeStudent(id);
-            outputArea.append(removeMessage + "\n");
+            outputArea.append(removeMessage + "\n"); // Display message from controller
         });
 
         updateButton.addActionListener(e -> {
+            // get all fields
             String studentID = idField.getText().trim(); // studentID can not be empty!!
-            String name = nameField.getText().trim();
-            String age = ageField.getText().trim();
-            String grade = gradeField.getText().trim();
+            String name = nameField.getText().trim(); // can be empty
+            String age = ageField.getText().trim(); // can be empty
+            String grade = gradeField.getText().trim(); // can be empty
 
             String message = studentController.updateStudent(name, age, grade, studentID);
-            outputArea.append(message + "\n");
+            outputArea.append(message + "\n"); // Display message from controller
 
         });
 
@@ -109,13 +111,14 @@ public class StudentManagementGUI {
             ArrayList<Student> students = studentController.displayAllStudents();
             outputArea.append("All Students:\n");
             for (Student student : students) {
+                // iterate the message for all students in the database
                 outputArea.append(student.getStudentID() + ": " + student.getName() + ", Age: " + student.getAge() + ", Grade: " + student.getGrade() + "\n");
             }
         });
 
         averageButton.addActionListener(e -> {
             double average = studentController.calculateAverageGrade();
-            outputArea.append("Average Grade: " + average + "\n");
+            outputArea.append("Average Grade: " + average + "\n"); // Display message from controller
         });
 
         // Układ główny

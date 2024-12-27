@@ -18,17 +18,20 @@ public class StudentControllerImpl implements StudentController {
     @Override
     public String addStudent(String name, String age, String grade, String studentID) {
         try {
-            if (studentManager.doesStudentExist(studentID)) {
+            if (studentManager.doesStudentExist(studentID)) { // student cannot exist
                 return "Student with id: " + studentID + " already exists";
             }
-
+            // convert age and grade if not numeric error would be catched with NumberFormatException
             int newAge = Integer.parseInt(age);
             double newGrade = Double.parseDouble(grade);
 
+            // data validation if invalid error will be catched
             if (studentID.isEmpty()) throw new IllegalArgumentException("ID cannot be empty.");
             if (name.isEmpty()) throw new IllegalArgumentException("Name cannot be empty.");
             if (newAge < 0 || newAge > 116) throw new IllegalArgumentException("Age must be positive.");
             if (newGrade < 0.0 || newGrade > 100.0) throw new IllegalArgumentException("Grade must be between 0.0 and 100.0.");
+
+            //set student and add him, then send message
             Student student = new Student(name, newAge, newGrade, studentID);
             studentManager.addStudent(student);
             return "Student added successfully";
@@ -41,10 +44,10 @@ public class StudentControllerImpl implements StudentController {
 
     @Override
     public String removeStudent(String studentID) {
-        if (!studentManager.doesStudentExist(studentID)) {
+        if (!studentManager.doesStudentExist(studentID)) { // if student exists
             return "Student with id: " + studentID + " does not exist";
         }
-        try {
+        try { // then remove him and return succesfull message
             studentManager.removeStudent(studentID);
             return "Student removed successfully";
         } catch (Exception e) {
@@ -55,18 +58,17 @@ public class StudentControllerImpl implements StudentController {
     @Override
     public String updateStudent(String name, String age, String grade, String studentID) {
         try {
-            if (studentID.isEmpty()) {
+            if (studentID.isEmpty()) { // studentID cannot be empty
                 throw new IllegalArgumentException("ID cannot be empty.");
             }
             if (!studentManager.doesStudentExist(studentID)) {
                 return "Student with id: " + studentID + " does not exist";
             }
 
-            ArrayList<Object> studentData = studentManager.getStudentById(studentID);
-                // studentData == [ StudentID, name, age, grade ]
-            String baseName = (String) studentData.get(1);
-            int baseAge = (Integer) studentData.get(2);
-            double baseGrade = (Double) studentData.get(3);
+            Student student = studentManager.getStudentById(studentID); // find student and get his actual data
+            String baseName = student.getName();
+            int baseAge = student.getAge();
+            double baseGrade = student.getGrade();
 
             if (!name.isEmpty()) { // if name is not empty
                 baseName = name;

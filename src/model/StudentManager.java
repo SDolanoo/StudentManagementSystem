@@ -10,11 +10,11 @@ public interface StudentManager {
     // Usuwa studenta z bazy danych za pomocą unikalnego ID
     void removeStudent(String studentID);
 
-    // sprawdza czy użytkownik istnieje
+    // Sprawdza czy użytkownik istnieje
     boolean doesStudentExist(String studentID);
 
-    // znajduje i oddaje dane studenta
-    ArrayList<Object> getStudentById(String studentID);
+    // Znajduje i oddaje dane studenta
+    Student getStudentById(String studentID);
 
     // Aktualizuje dane istniejącego studenta
     void updateStudent(String name, int age, double grade, String studentID);
