@@ -82,13 +82,19 @@ public class StudentControllerImpl implements StudentController {
                 // if grade is double, then catch NumberFormatException
                 baseGrade = Double.parseDouble(grade); // set grade
             }
+
+            // data validation if invalid error will be catched
+            if (baseName.isEmpty()) throw new IllegalArgumentException("Name cannot be empty.");
+            if (baseAge < 0 || baseAge > 116) throw new IllegalArgumentException("Age must be between 1 and 115.");
+            if (baseGrade < 0.0 || baseGrade > 100.0) throw new IllegalArgumentException("Grade must be between 0.0 and 100.0.");
+
             // after validation complete, update student in database
             studentManager.updateStudent(baseName, baseAge, baseGrade, studentID);
             return String.format("Student updated, name: %s, age: %d, grade: %f", baseName, baseAge, baseGrade);
         } catch (NumberFormatException ex) {
             return "Error: Age and Grade must be numeric.\n";
         } catch (IllegalArgumentException ex) {
-            return "ID cannot be empty.\n";
+            return ex + ".\n";
         }
     }
 

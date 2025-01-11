@@ -130,7 +130,7 @@ public class StudentManagementGUI {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(StudentManagementGUI::new);
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(StudentManagementGUI::new);
+//    }
 }
